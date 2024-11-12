@@ -1,0 +1,182 @@
+textarea{
+    resize: none;
+}
+#con-ma-div {
+    display: flex;
+}
+
+#content_management {
+    padding: 50px 50px;
+}
+
+#content_management > h1 {
+    font-size: 50px;
+}
+
+#content_management > h3 {
+    color: #999;
+}
+
+#con-ma-regi-btn {
+    width: 100%;
+    height: 70px;
+    position: relative;
+}
+
+#con-ma-regi-btn > button {
+    position: absolute;
+    right: 150px;
+    bottom: 0;
+    width: 70px;
+    height: 40px;
+    background-color: black;
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+.content-write{
+    margin-top: 20px;
+    width: 100%;
+}
+.font_title{
+
+}
+.content-write > select{
+    margin-top: 7px;
+    height: 30px;
+}
+.content-write > input
+{
+    margin-top: 7px;
+    width: 100%;
+    height: 30px;
+}
+.contents{
+    width: 400px;
+}
+/*모달 창*/
+#con-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(11, 19, 30, .37);
+    z-index: 10;
+    display: none;
+    pointer-events: auto;
+}
+
+
+.con-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 10px 50px;
+    border-radius: 10px;
+    width: 700px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: auto;
+    overflow: scroll;
+}
+
+#con-close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    text-align: center;
+    width: 85%;
+    margin: 0 auto
+}
+
+tr td {
+    border: 1px solid black
+}
+
+th {
+    border: 1px solid black;
+    font-weight: normal
+}
+#file_div{
+    width: 100%;
+}
+.file_box {
+    color: #999999;
+    text-align: center;
+    line-height: 100px
+}
+.file_area{
+    border: 1px solid #999999;
+    margin-top: 7px;
+    width: 200px;
+    height: 100px
+}
+.content-write > input{
+    padding: 0 20px;
+}
+textarea {
+    overflow: scroll;
+    box-sizing: border-box
+}
+#btnAera{
+    /*position: absolute;*/
+    top: 370px; left: 4px}
+#addButton{width: 30px;height: 30px;border-radius: 5px}
+#popButton{width: 30px;height: 30px;border-radius: 5px}
+
+#regi{width: 80%; background-color: #5DA886; margin: 0 auto; border: none; height: 30px; font-size: 20px; border-radius: 5px; margin-top: 10px;}
+/*로딩창*/
+#loading {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.state-viewer-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 150%);
+}
+
+.spinner {
+    position: relative;
+    top: 50%;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #03114E;
+    animation: spin 0.6s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* + FONT (필요에 맞게 수정하여 사용) */
+.label-font {
+    font-size: 16px;
+    font-weight: bold;
+}

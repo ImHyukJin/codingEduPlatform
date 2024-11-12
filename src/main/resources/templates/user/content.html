@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/aside.css">
+    <link rel="stylesheet" href="/css/content.css">
+
+</head>
+
+<body>
+<th:block th:replace="~{./user/layouts/font_css :: font_css}"></th:block>
+<!--상단바-->
+
+<th:block th:replace="~{./user/layouts/header :: header}"></th:block>
+<section id="con-ma-div">
+    <div>
+        <th:block th:replace="~{./user/layouts/aside :: aside}"></th:block>
+    </div>
+    <div style="padding: 50px 50px; width: 100%">
+        <div id="content_management">
+            <h1>교육 컨텐츠 관리</h1>
+            <br>
+            <h3>이용자들에게 제공될 교육 컨텐츠 패키지를 관리</h3>
+        </div>
+        <div id="con-ma-regi-btn">
+            <button id="regiBtn">등록하기</button>
+        </div>
+        <div style="width: 800px; margin-top: 50px">
+            <table class="table-group" style="width: 100%;">
+                <tr>
+                    <th>상품 이름</th>
+                    <th>카테고리</th>
+                    <th>가격</th>
+                    <th>난이도</th>
+                </tr>
+                <tr th:each="item : ${list}">
+                    <form action="/admin/delete_content" method="post">
+                        <input name="con_nm" type="hidden" th:value="${item.con_nm}">
+                        <td th:text="${item.con_nm}"></td>
+                        <td th:if="${item.cate_no == '1'}">자바</td>
+                        <td th:if="${item.cate_no == '2'}">파이썬</td>
+                        <td th:if="${item.cate_no == '3'}">C++</td>
+                        <td th:text="${item.con_price}"></td>
+                        <td th:text="${item.con_lv}"></td>
+                        <td>
+                            <button type="submit">삭제</button>
+                        </td>
+                    </form>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+</section>
+<!-- 모달창 -->
+<div id="con-modal" class="hidden">
+    <div class="con-modal-content">
+        <button id="con-close-modal">X</button>
+
+        <div class="content-write">
+            <div class="font_title">컨텐츠 타이틀</div>
+            <input type="text" id="con_nm" placeholder="컨텐츠 대포하는 타이틀을 적어주세요">
+        </div>
+        <div class="content-write">
+            <div class="font_title">카테고리</div>
+            <select id="cate_no">
+                <option>자바</option>
+                <option>파이썬</option>
+                <option>C++</option>
+            </select>
+        </div>
+
+        <div class="content-write">
+            <div class="font_title">가격</div>
+            <input type="number" id="con_price"  placeholder="컨텐츠 가격을 적어주세요">
+        </div>
+
+        <div class="content-write">
+            <div class="font_title">할인율</div>
+            <input type="number" id="con_discount" placeholder="컨텐츠 할인율을 적어주세요">
+        </div>
+
+        <div class="content-write">
+            <div class="font_title">상세내용</div>
+            <textarea style="width: 100%; height: 70px" id="con_description" placeholder="상세내용을 적어주세요"></textarea>
+        </div>
+
+        <div class="content-write">
+            <div class="font_title">레벨</div>
+            <select id="con_lv">
+                <option>입문</option>
+                <option>초급</option>
+                <option>중급</option>
+                <option>고급</option>
+            </select>
+        </div>
+
+        <div class="content-write">
+            <div style="display: inline" class="font_title">썸네일</div>
+            <div style="visibility: hidden;">0</div>
+            <input id="thumbnail_name" type="text" placeholder="썸네일 이름">
+
+            <div style="border: 1px solid #999999;margin-top: 7px; width: 200px; height: 100px">
+                <div style="color: #999999;text-align: center;line-height: 100px;" class="thumbnail_box">썸네일을 드래그 해주세요</div>
+            </div>
+        </div>
+        <div id="file_div">
+        <span class="content-write">
+            <div style="display: inline" class="th1">영상</div>
+            <div class="v-index" style="visibility: hidden;">1</div>
+            <input class="file_name" type="text" placeholder="영상의 이름">
+            <div class="file_area">
+                <div class="file_box">영상을 드래그 해주세요</div>
+            </div>
+        </span>
+        </div>
+
+
+        <table>
+<!--            <tr>-->
+<!--                <th class="th1">썸네일</th>-->
+<!--                <th>0</th>-->
+<!--                <th><input id="thumbnail_name" type="text" placeholder="썸네일 이름을 정해주세요"></th>-->
+<!--                <td>-->
+<!--                    <div class="thumbnail_box">썸네일을 드래그 해주세요</div>-->
+<!--                </td>-->
+
+<!--            </tr>-->
+<!--            <tbody id="file_div">-->
+<!--            <tr>-->
+<!--                <th class="th1">영상</th>-->
+<!--                <th class="v-index">1</th>-->
+<!--                <th><input class="file_name" type="text" placeholder="저장할 영상의 이름"></th>-->
+<!--                <td>-->
+<!--                    <div class="file_box">영상을 드래그 해주세요</div>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+        <div id="btnAera">
+            <button id="addButton">+</button>
+            <button id="popButton">-</button>
+        </div>
+        <button id="regi">저장하기</button>
+    </div>
+    <div id="loading">
+        <div class="spinner"></div>
+        <div class="state-viewer-container">
+            <label class="label-font" id="stateLabel"></label>
+        </div>
+    </div>
+</div>
+<!-- 모달창 끝 -->
+</body>
+<script src="/js/content.js"></script>
+</html>

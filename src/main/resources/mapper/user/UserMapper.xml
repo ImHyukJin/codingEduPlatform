@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.cep.repository.user.UserMapper">
+<select id="login" resultType="UserVO">
+		select * from users where user_id =
+		#{userId}
+	</select>
+	
+	<insert id="join">
+		insert into users(user_id,
+		user_pw,
+		user_nm,
+		user_age,
+		user_pn,
+		parn_pn,
+		user_gn,
+		role)
+		values (#{user_id},
+		#{user_pw},
+		#{user_nm},
+		#{user_age},
+		#{user_pn},
+		#{parn_pn},
+		#{user_gn},
+		#{role})
+	</insert>
+	
+	<select id = "checkLogin" resultType="UserVO">
+		select * from users
+		where user_id = #{userName}
+	</select>
+	
+	<update id= "updatePw">
+		update users set user_pw = #{user_pw}
+		where user_pn = #{user_pn}
+	</update>
+	
+	
+	<update id="auth">
+		update users set auth_nm = #{auth_nm}
+		where user_id = #{user_id}
+	</update>
+	
+	<select id="aLogin" resultType="UserVO">
+		select * from users
+		where user_pn = #{user_pn} 
+	</select>
+	
+	<select id = "authCheck" resultType = "UserVO">
+		select * from users
+		where auth_nm = #{auth_nm} and user_pn = #{user_pn}
+	</select>
+	
+	
+</mapper>
