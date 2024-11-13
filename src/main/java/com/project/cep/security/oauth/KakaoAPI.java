@@ -34,7 +34,6 @@ public class KakaoAPI {
 
 			//    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-//			c24cf5f8c6898decc705a11d6076870d
 			String req = "grant_type=authorization_code"
 					   + "&client_id=c24cf5f8c6898decc705a11d6076870d" //본인키
 					   + "&redirect_uri=http://127.0.0.1:8080/user/kakao"

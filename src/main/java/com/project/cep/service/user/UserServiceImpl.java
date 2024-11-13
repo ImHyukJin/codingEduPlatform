@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserVO aLogin(String pn) {
-		return userMapper.alogin(pn);
+		return userMapper.aLogin(pn);
 	}
 
 	@Override

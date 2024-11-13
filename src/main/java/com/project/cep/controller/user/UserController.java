@@ -98,13 +98,12 @@ public class UserController {
 
 		@GetMapping("/kakao")
 		public String kakao(@RequestParam("code") String code,Model model) {
-			
 			String access_token = kakaoApi.getAccessToken(code);
 			
 			HashMap<String, Object> userInfo = kakaoApi.getUserInfo(access_token);
 			System.out.println("결과:" + userInfo.toString());
 			
-			model.addAttribute("code",userInfo.get("nickname"));
+			model.addAttribute("name",userInfo.get("nickname"));
 			
 			
 			return "user/kakao";

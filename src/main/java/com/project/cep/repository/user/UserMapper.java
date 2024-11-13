@@ -16,6 +16,6 @@ public interface UserMapper {
 	public void updatePw(@Param("user_pw") String user_pw ,@Param("user_pn") String user_pn );
 	
 	public int auth(Map<String,Object> map);
-	public UserVO alogin(String pn);
+	public UserVO aLogin(String pn);
 	public UserVO authCheck(@Param("auth_nm") String auth_nm, @Param("user_pn") String user_pn);
 }
