@@ -168,7 +168,7 @@ public class UserController {
 			
 			SecurityContextHolder.getContext()
 					.setAuthentication(new UsernamePasswordAuthenticationToken(vo1, null, vo1.getAuthorities()));
-			return "redirect:/user/mainPage";
+			return "redirect:/user/main_page";
 		}
 		
 		@GetMapping("/find_PW")
