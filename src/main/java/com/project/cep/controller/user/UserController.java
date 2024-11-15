@@ -1,5 +1,6 @@
 package com.project.cep.controller.user;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,20 @@ public class UserController {
 		public String editor() {
 			return "code/editor";
 		}
+		
+		@PostMapping("/idCheck")
+	    public String idCheck(@RequestParam("user_id") String id) throws IOException, InterruptedException{
+	       UserVO vo = userService.checkLogin(id);
+	   if(id =="") {
+	       return "";
+	   }
+	   if(vo != null) {
+	      return "중복된 아이디입니다";
+	   }else {
+	      System.out.println("id = " + id);
+	      return "사용가능한 아이디입니다";
+	   }
+	    }
 		
 
 		@PostMapping("/register")

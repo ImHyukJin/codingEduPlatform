@@ -20,7 +20,7 @@ public class NaverAPI {
 	public String getAccessToken(String code){
 		String clientId = "hGxkco0a05QxwVjiglkx";//애플리케이션 클라이언트 아이디값";
 		String clientSecret = "xWwaEnVpSL";//애플리케이션 클라이언트 시크릿값";
-		String redirectURI = "http://127.0.0.1:8989/user/naver";
+		String redirectURI = "http://127.0.0.1:8080/user/naver";
 		String apiURL;
 		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
 		apiURL += "client_id=" + clientId;

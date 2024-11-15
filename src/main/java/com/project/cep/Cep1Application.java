@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.project.cep.repository.user")
+@MapperScan("com.project.cep.repository")
 public class Cep1Application {
 
 	public static void main(String[] args) {

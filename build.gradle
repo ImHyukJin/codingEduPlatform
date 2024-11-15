@@ -43,7 +43,7 @@ dependencies {
 	
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'com.google.code.gson:gson:2.8.9' // 최신 버전으로 수정
-	
+	implementation 'net.nurigo:sdk:4.2.7'
 }
 
 tasks.named('test') {
