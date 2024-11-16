@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+
+<th:block th:replace="~{./student/layouts/font_css :: font_css}"></th:block>
+
+<body>
+<!--상단바-->
+<th:block th:replace="~{./user/layouts/header :: header}"></th:block>
+<section id="group_content">
+    <th:block th:replace="~{./student/layouts/aside :: aside}"></th:block>
+
+
+    <div class="group_content_container">
+
+        <form name="moveContentDetail" action="/admin/content" method="post">
+            <div class="group_content_header">
+                <h1>[[${contentVO.sg_name}]]</h1>
+                <br>
+                <h3 style="margin-bottom: 10px">우리그룹 학습 콘텐츠 바로가기</h3>
+
+                <img width="200px;" th:src="${contentVO.thumbnail_path}" onclick="document.moveContentDetail.submit()">
+                <h5 style="width: 200px; text-align: center">[[${contentVO.con_nm}]]</h5>
+
+            </div>
+            <input type="hidden" name="content_name" id="inputConName" th:value="${contentVO.con_nm}">
+        </form>
+
+
+        <div class="group-detail-content">
+
+            <div class="group_board_container">
+
+                <div>
+                    <h2 class="board-header">학습그룹 공지 사항</h2>
+                    <table class="table-group">
+                        <tr>
+                            <th>공지제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                        </tr>
+
+                        <tr th:each="notice : ${noticeList}" th:onclick="noticeDetail([[${notice.ng_no}]])">
+
+                            <td>[[${notice.ng_title}]]</td>
+                            <td>[[${notice.user_id}]]</td>
+                            <td>[[${notice.ng_date}]]</td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div>
+                    <h2 class="board-header">학습그룹 기록게시판</h2>
+                    <table class="table-group">
+                        <tr>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                        </tr>
+                        <tr th:each="recordNotice : ${recordNoticeList}" th:onclick="noticeDetail([[${recordNotice.ng_no}]])">
+                            <td>[[${recordNotice.ng_title}]]</td>
+                            <td>[[${recordNotice.user_id}]]</td>
+                            <td>[[${recordNotice.ng_date}]]</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+            <button onclick="noticeRegistModalOpen()">게시글 작성</button>
+            <div>
+
+            </div>
+
+            <div class="group-qa-container">
+                <h2 class="board-header" style="padding-left: 15px">질문하기</h2>
+                <div class="group-qa-input">
+                    <h5 id="qa-regist">그룹원에게 질문을 해보세요.</h5>
+                </div>
+                <div class="group-qa-user" th:each="QAVO : ${QAList}">
+                    <p th:onclick="QADetailOpen([[${QAVO.qg_no}]])">[[${QAVO.qg_title}]]</p>
+                    <span>[[${QAVO.user_id}]]</span><span>[[${QAVO.qg_date}]]</span>
+                    <span th:if="${QAVO.ag_count != null}">댓글 : [[${QAVO.ag_count}]]개</span>
+                    <span th:if="${QAVO.ag_count == null}">댓글 : 0개</span>
+                </div>
+
+
+
+
+
+            </div>
+
+<!--            <h2 class="board-header">학습그룹 숙제 보기</h2>-->
+<!--            <table class="table-group">-->
+<!--                <tr>-->
+<!--                    <th>숙제명</th>-->
+<!--                    <th>레벨</th>-->
+<!--                    <th>코드보기</th>-->
+<!--                    <th>제출일</th>-->
+<!--                    <th>제출자</th>-->
+
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>데이터 1-1데이터 1-1</td>-->
+<!--                    <td>데이터 1-2</td>-->
+<!--                    <td><button class="student-apply-btn">코드보기</button></td>-->
+<!--                    <td>데이터 1-3</td>-->
+<!--                    <td>데이터 1-3</td>-->
+<!--                </tr>-->
+
+<!--            </table>-->
+
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+<!--QA 게시물 등록-->
+<div id="QAModal" style="display: none">
+    <div class="notice-modal-wrap">
+        <div class="notice-modal-container">
+            <h1>질문하기</h1>
+            <form action="/student/QARegist" method="post">
+                <div class="regist_content" style="margin-top: 50px">
+                    <ul class="regist_content_container">
+                        <li>
+                            <p class="notice_letter">제목</p>
+                            <input type="text" name="qg_title" placeholder="제목을 입력하세요." required>
+                        </li>
+
+                        <li>
+                            <p class="notice_letter">내용</p>
+                            <textarea name="qg_content" id="QAcontent" placeholder="내용을 입력하세요."  style="height: 250px" required></textarea>
+                        </li>
+                    </ul>
+
+                    <input type="hidden" name="sg_no" th:value="${sgNo}">
+                    <input type="hidden" name="user_id" th:value="${#authentication.getPrincipal.getUserVO.user_id}">
+                    <input type="submit" value="등록하기" class="notice_btn" style="margin-right: 0;" id="QARegistBtn">
+                    <input type="reset" value="취소하기" class="notice_btn" style="margin-right: 0;" onclick="QaModalClose()">
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- QA 조회-->
+<div id="QADetailModal" style="display: none">
+
+
+</div>
+
+
+
+
+
+<!--게시글 등록-->
+<div id="noticeModal" style="display: none">
+    <div class="notice-modal-wrap">
+        <div class="notice-modal-container">
+            <h1>게시글 작성하기</h1>
+            <form action="/student/noticeRegist" method="post">
+                <div class="regist_content" style="margin-top: 50px">
+                    <ul class="regist_content_container">
+                        <li>
+                            <p class="notice_letter">제목</p>
+                            <input type="text" name="ng_title" placeholder="제목을 입력하세요." required>
+                        </li>
+
+                        <li>
+                            <p class="notice_letter">내용</p>
+                            <textarea name="ng_content" id="noticeContent" placeholder="내용을 입력하세요."  style="height: 250px" required></textarea>
+                        </li>
+                        <li>
+                            <p class="notice_letter">게시판 용도</p>
+                            <select name="ng_usage">
+                                <option value="공지">공지사항</option>
+                                <option value="기록">기록게시판</option>
+                            </select>
+                        </li>
+                    </ul>
+
+                    <input type="hidden" name="sg_no" th:value="${sgNo}">
+                    <input type="hidden" name="user_id" th:value="${#authentication.getPrincipal.getUserVO.user_id}">
+                    <input type="submit" value="등록하기" class="notice_btn" style="margin-right: 0;" id="noticeRegistBtn">
+                    <input type="reset" value="취소하기" class="notice_btn" style="margin-right: 0;" onclick="noticeRegistModalClose()">
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!--게시글 수정-->
+<div id="noticeUpdateModal" style="display: none">
+
+
+</div>
+<!-- 게시글 조회-->
+<div id="noticeModalView" style="display: none">
+
+
+</div>
+
+
+
+
+<script>
+    var noticeModal = document.querySelector("#noticeModal");
+    var noticeModalView = document.querySelector("#noticeModalView");
+    var noticeUpdateModal = document.querySelector("#noticeUpdateModal");
+    var noticeNum;
+    var noticeRegistBtn = document.querySelector("#noticeRegistBtn");
+    var QARegistBtn = document.querySelector("#QARegistBtn");
+    var qaRegist = document.querySelector("#qa-regist");
+    var QAModal = document.querySelector("#QAModal");
+    var QADetailModal = document.querySelector("#QADetailModal");
+    var qaRegistBtn = document.querySelector("#qa-regist-btn");
+
+    noticeRegistBtn.onclick=()=>{
+        noticeModal.style.display="none";
+        const noticeContent = document.querySelector("#noticeContent");
+
+        noticeContent.value= noticeContent.value.replace(/(?:\r\n|\r|\n)/g,'<br/>')
+
+
+
+
+    }
+    //질문등록
+    QARegistBtn.onclick=()=>{
+        QAModal.style.display="none";
+        const QAContent = document.querySelector("#QAcontent");
+
+        QAContent.value= QAContent.value.replace(/(?:\r\n|\r|\n)/g,'<br/>')
+
+
+    }
+    //답변 등록
+    function registAnswer(qgNo){
+        const answerContent = document.querySelector("#ag_content");
+        const ag_content = answerContent.value.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+
+
+        fetch("/student/registAnswer",{
+            method : "post",
+            headers :  {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ag_content : ag_content,
+                qg_no : qgNo,
+                user_id : "[[${#authentication.getPrincipal.getUserVO.user_id}]]"
+            }),
+        })
+        .then(function (res){
+            console.log(res)
+            QADetailOpen(qgNo)
+        })
+
+
+    }
+
+    //게시판 등록
+    function noticeRegistModalOpen(){
+        noticeModal.style.display="flex";
+
+    }
+
+    function noticeRegistModalClose(){
+        noticeModal.style.display="none";
+    }
+
+
+    //게시판 조회
+    function noticeDetail(ngNo){
+        noticeNum = ngNo;
+
+        fetch(`getNoticeDetail?ng_no=${noticeNum}`)
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                console.log(data)
+        noticeModalView.innerHTML=`
+                    <div class="notice-modal-wrap">
+                    <div class="notice-modal-container">
+                        <h1>게시글 조회</h1>
+
+                        <div class="regist_content" style="margin-top: 50px">
+                            <ul class="regist_content_container">
+
+                                <li style="border-bottom: 1px dashed black">
+                                     <span class="notice_letter" style="margin-right: 10px">${data.notice.user_id}</span>
+                                     <span class="notice_letter">${data.notice.ng_date}</span>
+                                     <p class="notice_title">${data.notice.ng_title}</p>
+
+                                </li>
+
+                                <li>
+                                    <span id="notice_content" style="word-break:break-all;">${data.notice.ng_content}</span>
+                                </li>
+
+                            </ul>
+
+                            <button class="notice_btn" onclick="noticeDetailClose()">닫기</button>
+                            <button class="notice_btn" onclick="noticeDetailUpdate()">게시글 수정</button>
+                            <form action="/student/noticeDelete" method="post">
+                                <input type="hidden" name="ng_no" value="${data.notice.ng_no}">
+                                <input type="hidden" name="sg_no" value="${data.notice.sg_no}">
+                                 <button class="notice_btn" id="notice-del-btn">게시글 삭제</button>
+                            </form>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                `;
+        noticeModalView.style.display="flex";
+        })
+
+    }
+
+    function noticeDetailClose(){
+        noticeModalView.innerHTML="";
+        noticeModalView.style.display="none";
+    }
+
+
+
+    //게시판 수정
+    function noticeDetailUpdate(){
+        noticeModalView.style.display="none";
+
+        fetch(`getNoticeDetail?ng_no=${noticeNum}`)
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+        noticeUpdateModal.innerHTML=`
+                   <div class="notice-modal-wrap">
+                        <div class="notice-modal-container">
+                            <h1>게시글 수정하기</h1>
+                            <form action="/student/noticeUpdate" method="post">
+                                <div class="regist_content" style="margin-top: 50px">
+                                    <ul class="regist_content_container">
+                                        <li>
+                                            <p class="notice_letter">제목</p>
+                                            <input type="text" name="ng_title" placeholder="제목을 입력하세요." value="${data.notice.ng_title}" required>
+                                        </li>
+
+                                        <li>
+                                            <p class="notice_letter">내용</p>
+                                            <textarea name="ng_content" placeholder="내용을 입력하세요."  style="height: 250px" required>${data.notice.ng_content}</textarea>
+                                        </li>
+
+                                    </ul>
+                                    <input type="hidden" name="user_id" value="[[${userId}]]">
+                                      <input type="hidden" name="sg_no" value="${data.notice.sg_no}">
+                                    <input type="hidden" name="ng_no" value="${data.notice.ng_no}">
+                                    <input type="submit" value="수정하기" class="notice_btn" style="margin-right: 0;">
+                                    <input type="reset" value="취소하기" class="notice_btn" style="margin-right: 0;" onclick="noticeUpdateModalClose()">
+
+                                </div>
+                            </form>
+                        </div>
+                   </div>
+                `;
+        noticeUpdateModal.style.display="flex";
+        })
+
+
+    }
+    function noticeUpdateModalClose(){
+        noticeUpdateModal.innerHTML="";
+        noticeUpdateModal.style.display="none";
+    }
+
+    // 질문하기
+    qaRegist.onclick=()=>{
+        QAModal.style.display="flex";
+    }
+    function QaModalClose(){
+        QAModal.style.display="none";
+    }
+
+    //질문 조회
+    function QADetailOpen(qgNo){
+
+        QADetailModal.innerHTML = "";
+
+        fetch(`getQADetail?qg_no=${qgNo}`)
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=> {
+                console.log(data)
+
+                QADetailModal.innerHTML=`
+                <div class="notice-modal-wrap" style="padding: 40px 40px 40px 50px">
+                    <div class="notice-modal-container"  style="overflow: auto scroll; height: 600px; width: 500px; padding: 20px">
+                        <div class="regist_content" style="margin-top: 0">
+
+                            <button class="notice_btn" onclick="QADetailClose()">닫기</button>
+                            <form method="post" action="/student/QADel">
+                            <input type="hidden" name="qg_no" value="${data.QAVO.qg_no}">
+                             <input type="hidden" name="sg_no" value="${data.QAVO.sg_no}">
+                                 <button class="notice_btn" id="notice-del-btn" onclick="QADetailClose()">게시글 삭제</button>
+                            </form>
+
+
+                            <ul class="regist_content_container" id="qa-wrap">
+
+                                <li style="border-bottom: 1px dashed black; margin-bottom: 30px">
+                                    <span class="notice_letter" style="margin-right: 10px">${data.QAVO.user_id}</span>
+                                    <span class="notice_letter">${data.QAVO.qg_date}</span>
+                                    <p class="notice_title">${data.QAVO.qg_title}</p>
+
+                                </li>
+
+                                <li>
+                                    <span id="notice_content" style="word-break:break-all;">${data.QAVO.qg_content}</span>
+                                </li>
+
+                                <li style="border-top: 1px dashed black;">
+                                    <p class="notice_letter">답변하기</p>
+                                    <textarea id="ag_content" name="ag_content"  placeholder="내용을 입력하세요." required style="height: 100px; width: 100%;"></textarea>
+                                     <button class="notice_btn" id="qa-regist-btn" onclick="registAnswer(${data.QAVO.qg_no})">답변하기</button>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                `;
+                const qaWrap = document.querySelector("#qa-wrap");
+
+
+                for(let answer of data.answerList){
+                    var li = document.createElement("li");
+                    li.style.borderTop="1px dashed black";
+                    if(answer.user_id != '[[${#authentication.getPrincipal.getUserVO.user_id}]]'){
+                        li.innerHTML=`
+                    <span class="notice_letter" style="margin-right: 10px">${answer.user_id}</span>
+                    <span class="notice_letter" style="margin-right: 10px">${answer.ag_date}</span>
+                    <p class="notice_title">${answer.ag_content}</p>`;
+                    }else{
+                        li.innerHTML=`
+                    <span class="notice_letter" style="margin-right: 10px">${answer.user_id}</span>
+                    <span class="notice_letter" style="margin-right: 10px">${answer.ag_date}</span>
+                    <span class="notice_letter ag-del-btn" onclick="answerDel(${answer.ag_no},${answer.qg_no})" >삭제</span>
+                    <p class="notice_title">${answer.ag_content}</p>`;
+                    }
+
+                    qaWrap.appendChild(li);
+
+                }
+
+
+
+            })
+        QADetailModal.style.display="flex";
+    }
+
+    function answerDel(agNo, qgNo){
+        fetch("/student/answerDelete",{
+            method : "post",
+            headers :  {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ag_no : agNo,
+            }),
+        })
+            .then(function (res){
+                console.log(res)
+                QADetailOpen(qgNo)
+            })
+    }
+
+    function QADetailClose(){
+        QADetailModal.style.display="none";
+        location.href = location.href;
+    }
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

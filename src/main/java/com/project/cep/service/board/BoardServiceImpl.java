@@ -2,11 +2,13 @@ package com.project.cep.service.board;
 
 import java.util.ArrayList;
 
-import com.project.geomin.command.AnswerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.geomin.command.QuestionVO;
+import com.project.cep.dto.board.AnswerVO;
+import com.project.cep.dto.board.QuestionVO;
+import com.project.cep.repository.board.BoardMapper;
+
 
 @Service("boardService")
 public class BoardServiceImpl implements boardService {
@@ -21,7 +23,7 @@ public class BoardServiceImpl implements boardService {
 	}
 
 	@Override
-	public ArrayList<QuestionVO> questionList(Criteria cri, String questionSearch, String status) {
+	public ArrayList<QuestionVO> questionList(WritingCriteria cri, String questionSearch, String status) {
 		ArrayList<QuestionVO> list = boardMapper.questionList(cri, questionSearch, status);
 		return list;
 	}

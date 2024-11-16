@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.project.cep.dto.user.UserVO;
-import com.project.cep.repository.user.UserMapper;
+import com.project.cep.dto.user.account.UserVO;
+import com.project.cep.repository.user.account.UserMapper;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService{

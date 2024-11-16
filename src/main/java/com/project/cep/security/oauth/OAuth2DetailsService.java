@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.project.cep.dto.user.UserVO;
-import com.project.cep.repository.user.UserMapper;
+import com.project.cep.dto.user.account.UserVO;
+import com.project.cep.repository.user.account.UserMapper;
 import com.project.cep.security.MyUserDetails;
 
 import lombok.RequiredArgsConstructor;

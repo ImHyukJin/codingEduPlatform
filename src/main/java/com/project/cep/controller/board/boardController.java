@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.project.cep.dto.board.AnswerVO;
+import com.project.cep.dto.board.BoardPageVO;
+import com.project.cep.dto.board.QuestionVO;
+import com.project.cep.dto.board.RegistEduVO;
+import com.project.cep.service.board.BoardServiceImpl;
+import com.project.cep.service.board.WritingCriteria;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,14 +31,14 @@ public class boardController {
 
 	@Autowired
 	@Qualifier("boardService")
-	private boardService boardService;
+	private BoardServiceImpl boardService;
 	
 	@GetMapping("/list")
-	public String list(Model model, Criteria cri, @RequestParam(value = "questionSearch", required=false) String questionSearch,
+	public String list(Model model, WritingCriteria cri, @RequestParam(value = "questionSearch", required=false) String questionSearch,
 					   @RequestParam(value = "status", required=false) String status) {
 
 		if(cri.getCurrentPage() == null || cri.getWriting() == null){
-			cri = new Criteria();
+			cri = new WritingCriteria();
 		}
 
 		BoardPageVO vo = new BoardPageVO(cri, boardService.getBoardPageTotal(questionSearch, status));

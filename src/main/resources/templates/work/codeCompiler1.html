@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/Compiler/index2.css">
+  <style type="text/css">
+  #loading {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.state-viewer-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 150%);
+}
+
+.spinner {
+    position: relative;
+    top: 50%;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #03114E;
+    animation: spin 0.6s infinite linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* + FONT (필요에 맞게 수정하여 사용) */
+.label-font {
+    font-size: 16px;
+    font-weight: bold;
+}</style>
+</head>
+<body style="background-color: #34614d;">
+
+<section>
+  <div id="top" style="padding-left: 12px; line-height: 50px; height: 50px; font-weight: bold;  background-color: #334c48;">[[ ${vo.h_name} ]]</div>
+  <div id="area">
+    <div id="left">
+      <div id="pro_description" style="padding: 10px; color: white">
+        [[ ${vo.h_detail1} ]]
+      </div>
+      <div id="restrictions" style="padding: 10px; color: white">
+        <table style="background-color: #334c48; height: 100px; width: 400px">
+          <tr>
+            <th style="border-right: 1px solid #36444d; border-bottom: 1px solid #36444d">"Parameter1"</th>
+            <th  style="border-right: 1px solid #36444d; border-bottom: 1px solid #36444d">"Parameter2"</th>
+            <th style="border-bottom: 1px solid #36444d">"Answer"</th>
+          </tr>
+          <tr>
+            <th style="border-right: 1px solid #36444d; border-bottom: 1px solid #36444d">"[[ ${vo.h_test1} ]]"</th>
+            <th  style="border-right: 1px solid #36444d; border-bottom: 1px solid #36444d">"[[ ${vo.h_test2} ]]"</th>
+            <th style="border-bottom: 1px solid #36444d">"[[ ${vo.h_ans1} ]]"</th>
+          </tr>
+          <tr>
+            <th style="border-right: 1px solid #36444d">"[[ ${vo.h_test3} ]]"</th>
+            <th style="border-right: 1px solid #36444d">"[[ ${vo.h_test4} ]]"</th>
+            <th>"[[ ${vo.h_ans2} ]]"</th>
+          </tr>
+        </table>
+        [[ ${vo.h_detail2} ]]
+      </div>
+      <div id="ex" style="padding: 10px; color: white">
+        [[ ${vo.h_detail3} ]]
+      </div>
+
+    </div>
+    <div id="right">
+      <div id="ss">
+        <p style="border-bottom: 1px solid #334c48; height: 50px; padding-left: 12px; line-height: 50px; color: white">Solution.java</p>
+       <th:block th:replace="~{./code/codeCompiler :: editor}" id="code"></th:block> 
+      </div>
+
+    </div>
+  </div>
+</section>
+    <div id="loading">
+        <div class="spinner"></div>
+        <div class="state-viewer-container">
+            <label class="label-font" id="stateLabel"></label>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -2,16 +2,18 @@ package com.project.cep.repository.board;
 
 import java.util.ArrayList;
 
-import com.project.geomin.command.AnswerVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.project.geomin.command.QuestionVO;
+import com.project.cep.dto.board.AnswerVO;
+import com.project.cep.dto.board.QuestionVO;
+import com.project.cep.service.board.WritingCriteria;
+
 
 @Mapper
 public interface BoardMapper {
 	public int boardRegi(QuestionVO vo);
-	public ArrayList<QuestionVO> questionList(@Param("cri") Criteria cri, @Param("questionSearch") String questionSearch, @Param("status") String status);
+	public ArrayList<QuestionVO> questionList(@Param("cri") WritingCriteria cri, @Param("questionSearch") String questionSearch, @Param("status") String status);
 	int getBoardPageTotal(@Param("questionSearch") String questionSearch, @Param("status") String status);
 	QuestionVO getboardDetail(QuestionVO vo);
 	ArrayList<AnswerVO> getAnswerList(QuestionVO vo);

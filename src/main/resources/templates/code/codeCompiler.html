@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org" th:fragment="editor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel ="stylesheet" href="/css/codeCompiler.css">
+
+</head>
+<body>
+    <form id="codeForm">
+    	<input type="hidden" id="user_id" th:value="${#authentication.principal.username}">
+    	<input type="hidden" id="homework_num" th:value="${vo.h_no}">
+		<th:block th:replace="~{./code/editor :: edit}" id="code"></th:block>
+        <button type="submit" id="submit"><span class="icon"><img src="/img/run.png"></span><span class="btnName">Compile and Run</span></button>
+    </form>
+       
+   <div style="width:100px; height: auto;"><pre id="output" ></pre></div>
+
+   <script src="/js/Compiler/compiler.js"></script>
+    <script>
+
+    
+        document.getElementById("codeForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 폼의 기본 동작 중단
+            var code = document.querySelector(".ace_content").textContent;
+            var user_id = document.getElementById("user_id").value;
+            var homework_num = document.getElementById("homework_num").value;
+			console.log("code: " + code);
+
+            // AJAX를 사용하여 서버로 코드를 전송하고 결과를 받아옴
+            var xhr = new XMLHttpRequest();
+            const loading = document.querySelector('#loading');
+            loading.style.display = 'block';
+            setTimeout(()=>{
+            xhr.open("POST", "/compileAndRun", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                    document.getElementById("output").innerText = xhr.responseText;
+                }
+                loading.style.display = 'none';
+            };
+            xhr.send("code=" + encodeURIComponent(code)+"&user_id="+user_id+"&homework_num="+homework_num);
+            }
+            , 2000);
+        });
+    </script>
+</body>
+</html>

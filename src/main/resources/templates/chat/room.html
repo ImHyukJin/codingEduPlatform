@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>room</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/gpapply/room.css">
+    <link rel="stylesheet" href="/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d71a4a6ef8.js"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+</style>
+
+<script>
+    window.onload = function(){
+        createRoom()
+
+        var modalOpen = document.querySelector(".modal-open");
+        var modalClose = document.querySelector(".modal-close");
+        var createChatModal = document.querySelector("#create-chat-modal")
+
+        modalClose.onclick = function() {
+            createChatModal.style.display = "none";
+        }
+        modalOpen.onclick = function (){
+            createChatModal.style.display = "block";
+        }
+    }
+
+    //방을 생성하자
+    function createRoom(){
+        $("#createRoom").click(function(){
+            var msg = { rc_title : $("#roomName").val()};
+            commonAjax("/createRoom", msg, "post", function(res){
+                location.href="/room";
+            })
+
+        });
+
+        $("#roomName").val("");
+    }
+
+
+    //방으로 이동하자
+    function goRoom(number, name, usage){
+        location.href=`/moveChatting?rc_title=${name}&rc_no=${number}&rc_usage=${usage}`;
+    }
+
+    var commonAjax = function(url, data, methodType, fn){
+        // 데이터 값이 잘 넘어왔는지 확인
+        console.log(url);
+        console.log(data);
+        console.log(fn);
+        console.log(methodType);
+
+
+        $.ajax({
+            url: url,
+            method: methodType,
+            data: JSON.stringify(data),
+            contentType : "application/json",
+            success : function (res){
+                fn(res);
+            },
+            error : function(err){
+                console.log("에러남");
+                fn(err)
+            }
+
+        });
+    }
+</script>
+
+
+
+
+<body>
+<div class="container">
+    <h1>채팅방</h1>
+    <div class="roomContainer">
+        <table class="roomList">
+            <tr>
+                <th class='room'>방 이름</th>
+                <th class="usage">채팅방식</th>
+                <th>수신여부</th>
+                <th class='go'>참여</th>
+            </tr>
+            <tr th:each="roomVO : ${roomList}">
+                <td class='room'>[[${roomVO.rc_title}]]</td>
+                <th:block th:if="${roomVO.rc_usage == 'one'}">
+                    <td class="usage">1대1</td>
+                </th:block>
+                <th:block th:if="${roomVO.rc_usage == 'group'}">
+                    <td class="usage">그룹</td>
+                </th:block>
+                <th:block th:if="${roomVO.jc_status == '활성화' and roomVO.rc_usage == 'one'}">
+                    <td style="color: red">메시지도착</td>
+                </th:block>
+                <th:block th:if="${roomVO.jc_status != '활성화' and roomVO.rc_usage == 'one'}">
+                    <td>메시지없음</td>
+                </th:block>
+                <th:block th:if="${roomVO.rc_usage == 'group'}">
+                    <td></td>
+                </th:block>
+                <td class='go'><button type='button' th:onclick="goRoom([[${roomVO.rc_no}]], [[${roomVO.rc_title}]], [[${roomVO.rc_usage}]])">참여</button></td>
+
+            </tr>
+        </table>
+    </div>
+
+    <Section style="position: fixed; bottom: 30px; left: 200px; width: 100%">
+
+                <button class="modal-open">1대1 초대하기</button>
+<!--                <td>방이름입력 : <input type="text" name="roomName" id="roomName"></td>-->
+<!--                <td><button id="createRoom">오픈방 만들기</button> </td>-->
+
+    </Section>
+
+</div>
+
+
+
+
+
+<!-- 채팅방 생성 모달창 -->
+<section id="create-chat-modal" style="display: none">
+
+    <li><input type="hidden" name="" id="" value="방장"></li>
+
+    <div class="chat-modal-container">
+        <i class="fa-solid fa-x fa-2x modal-close" aria-hidden="true"></i>
+        <form action="/createRoomDB" method="post">
+
+        <ul class="chat_content_container">
+            <li><h2>채팅방 생성</h2></li>
+            <li>
+                <h3>그룹 선택</h3>
+                <select class="invite_list" id="myGroup" onfocus="getGroup()">
+
+                </select>
+            </li>
+            <li>
+                <h3>초대할 유저 리스트</h3>
+                <select name="user_id" class="invite_list" id="myStudent" onfocus="getStudent()">
+
+                </select>
+            </li>
+            <li>
+                <h3>방 이름</h3>
+                <input type="text" name="rc_title" value="" >
+            </li>
+            <input type="submit" value="1대1 채팅하기">
+        </ul>
+        </form>
+    </div>
+</section>
+<script th:inline="javascript">
+
+    var msg = [[${msg}]];
+
+    if(msg != null){
+        alert(msg);
+    }
+    function getMyTeacher(){
+        const myTeacher = document.querySelector("#myTeacher");
+        myTeacher.innerHTML= "";
+        fetch("/chat/getMyTeacher")
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                for(vo of data){
+                    var option = document.createElement("option");
+                    option.value = vo.user_id;
+                    option.innerText = vo.user_nm;
+                    myTeacher.appendChild(option);
+                }
+
+            })
+    }
+    function getGroup(){
+        const myGroup = document.querySelector("#myGroup");
+        myGroup.innerHTML= "";
+        fetch("/chat/getMyGroup")
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                for(vo of data){
+                    var option = document.createElement("option");
+                    option.value = vo.sg_no;
+                    option.innerText = vo.sg_name;
+                    myGroup.appendChild(option);
+                }
+
+            })
+    }
+    function getStudent(){
+        const myStudent = document.querySelector("#myStudent");
+        const myGroup = document.querySelector("#myGroup");
+        const sgNo = myGroup.value;
+        myStudent.innerHTML= "";
+        fetch(`/chat/getMyStudent?sg_no=${sgNo}`)
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                for(vo of data){
+                	if(vo.user_id != [[${#authentication.getPrincipal.getUserVO.user_id}]]){
+	                    var option = document.createElement("option");
+	                    option.value = vo.user_id;
+	                    option.innerText = vo.user_nm;
+	                    myStudent.appendChild(option);
+                	}
+                }
+
+            })
+            .catch(err => console.log(err))
+
+    }
+
+</script>
+
+</body>
+</html>
