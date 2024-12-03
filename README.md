@@ -50,5 +50,6 @@
 ![image](https://github.com/user-attachments/assets/b48d5a7f-1af4-49d7-8ddc-190ae4f4205e)
 
 # 5. 프로젝트 구현 화면
-> 회원 / 비회원 용 화면
+![image](https://github.com/user-attachments/assets/9e802e67-ab29-4513-b418-cd19b454e0d1)
+
 
