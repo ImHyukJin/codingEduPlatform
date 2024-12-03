@@ -46,7 +46,9 @@
 # 3. 개발환경
 ![image](https://github.com/user-attachments/assets/ae282c4d-8df5-4ea2-a18f-931308716bb9)
 
-### 개발일정
+# 4. 개발일정
 ![image](https://github.com/user-attachments/assets/b48d5a7f-1af4-49d7-8ddc-190ae4f4205e)
 
-- - -
+# 5. 프로젝트 구현 화면
+> 회원 / 비회원 용 화면
+
